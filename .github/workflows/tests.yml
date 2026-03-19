@@ -1,0 +1,32 @@
+name: Typescript CI Lab 4
+
+on:
+  push:
+    branches: [ lab4 ]
+  pull_request:
+    branches: [ lab4 ]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: './lab4/package-lock.json'
+
+      - name: Install dependencies
+
+        run: npm ci
+        working-directory: ./lab4
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./lab4
