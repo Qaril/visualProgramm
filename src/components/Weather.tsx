@@ -7,6 +7,14 @@ import type {IWeather} from "../types/weather.ts";
         data: IWeather;
     }
 
+    export interface IWeatherOnFiveDay {
+        list: IWeather[];
+        city: {
+            name: string;
+            timezone: number;
+        };
+    }
+
 
 const Weather = ({data}: WeaterProps) => {
 
