@@ -29,4 +29,5 @@ export interface IWeather {
     id: number;
     city:string;
     cod: number;
+    dt_txt?: string;
 }
