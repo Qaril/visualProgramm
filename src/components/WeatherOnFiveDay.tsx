@@ -11,8 +11,7 @@ interface WeatherOnFiveDayProps{
 
 const WeatherOnFiveDay = ({items, timezone}: WeatherOnFiveDayProps) => {
 
-    const dailyData = items.filter(item => item.dt.txt?.includes("12:00:00"));
-
+    const dailyData = items.filter(item => item.dt_txt?.includes("12:00:00"));
     const formatDate = (dt: number) => {
         return new Date(dt * 1000).toLocaleDateString('ru-RU', {
             weekday: 'short',
