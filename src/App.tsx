@@ -8,15 +8,17 @@ const App = () => {
     const [weather,setWeather] = useState<IWeather | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-
+    const [city, setCity] = useState<string>("Novosibirsk");
+    const [inputValue, setInputValue] = useState<String>("")
 
     const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
-    const city = "Novosibirsk";
 
-    const fetchWeather = async () => {
+
+    const fetchWeather = async (targetCityinSearch: string) => {
         try {
             setLoading(true);
-            const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&lang=ru`);            setWeather(response.data);
+            const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${targetCityinSearch}&appid=${API_KEY}&units=metric&lang=ru`);
+            setWeather(response.data);
             setError(null);
         }catch (e) {
             setError("Ошибочка в загрузке погоды 😡");
@@ -28,8 +30,17 @@ const App = () => {
     };
 
     useEffect(() => {
-        fetchWeather();
+        fetchWeather(city);
     }, []);
+
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if(inputValue.trim()) {
+            fetchWeather(inputValue);
+            setCity(inputValue);
+        }
+    };
 
 
     if (loading) return <div>Выполняется загрузка💫</div>
@@ -37,6 +48,12 @@ const App = () => {
 
     return (
         <div className={"main-app"}>
+            <form onSubmit={handleSearch}>
+                <input
+                type={"text"} value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder={"Введи название города"}
+                />
+                <button type={"submit"}>Поиск🚀</button>
+            </form>
             {weather && <Weather data={weather} />}
         </div>
     );
