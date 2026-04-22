@@ -55,6 +55,7 @@ const App = () => {
                 <button type={"submit"}>Поиск🚀</button>
             </form>
             {weather && <Weather data={weather} />}
+
         </div>
     );
 };
