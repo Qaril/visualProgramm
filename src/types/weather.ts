@@ -1,19 +1,19 @@
 export interface IWeather {
     main: {
-        temperature: number;
-        feeling: number;
-        moisture: number; //тут влага если что
-        press: number;
+        temp: number;
+        feels_like: number;
+        humidity: number; //тут влага если что
+        pressure: number;
     };
     weather: {
         id: number;
         main: string;
-        additiional_info: string;
+        description: string;
         icon: string; }[];
     wind: {
         speed: number;
     };
-    cloudi: {
+    clouds: {
         all: number;
     }
     name: string;
@@ -26,7 +26,7 @@ export interface IWeather {
         sunset:number;
 };
     timezone:number;
-    id_city: number;
-    city_namee:string;
-    code: number;
+    id: number;
+    city:string;
+    cod: number;
 }

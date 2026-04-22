@@ -14,13 +14,13 @@ const Weather = ({data}: WeaterProps) => {
             <h2>{data.name}</h2>
             <div className={"mathBlock"}>
                 <h1>
-                    {Math.round(data.main.temperature)}°C
+                    {Math.round(data.main.temp)}°C
                 </h1>
-                <p>{data.weather[0].additiional_info}</p>
+                <p>{data.weather[0].description}</p>
             </div>
             <div className={"details"}>
                 <span>
-                    humidity: {data.main.moisture}%
+                    humidity: {data.main.humidity}%
                 </span>
                 <span>Wind {data.wind.speed}м/c</span>
             </div>
