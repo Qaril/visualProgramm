@@ -3,6 +3,8 @@ import type {IWeather} from "./types/weather.ts";
 import axios from 'axios';
 import Weather from "./components/Weather.tsx";
 import WeatherOnFiveDay from "./components/WeatherOnFiveDay.tsx";
+import PrognozNaSurtki from "./components/PrognozNaSurtki.tsx";
+import './App.css'
 
 const App = () => {
 
@@ -62,7 +64,10 @@ const App = () => {
             {weather && <Weather data={weather} />}
 
             {fiveDayWeather && weather && (
-                <WeatherOnFiveDay items={fiveDayWeather} timezone={weather.timezone} />
+                <>
+                    <PrognozNaSurtki items={fiveDayWeather} />
+                    <WeatherOnFiveDay items={fiveDayWeather} timezone={weather.timezone} />
+                </>
             )}
         </div>
     );
