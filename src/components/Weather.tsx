@@ -46,7 +46,7 @@ const Weather = ({data}: WeaterProps) => {
             </div>
             <div className={"details"}>
                 <span>
-                    Humidity: {data.main.humidity}%
+                    humidity: {data.main.humidity}%
                 </span>
                 <span>Wind {data.wind.speed}м/c</span>
                 <span>Air Pressure: {Math.round(data.main.pressure * 0.750062)} мм</span>
