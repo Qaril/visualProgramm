@@ -67,15 +67,16 @@ const App = () => {
                     <div className="weather-card day-card">
                         <div className="card-type-label">ДЕНЬ</div>
                         <Weather data={weather} />
-                        <PrognozNaSurtki items={fiveDayWeather} filterHour="12" />
-                        <WeatherOnFiveDay items={fiveDayWeather} timezone={weather.timezone} filterHour="12" />
+                        <PrognozNaSurtki items={fiveDayWeather} isNight={false} />
+                        <WeatherOnFiveDay items={fiveDayWeather} filterHour="12" />
                     </div>
 
                     <div className="weather-card night-card">
+
                         <div className="card-type-label">НОЧЬ</div>
                         <Weather data={weather} />
-                        <PrognozNaSurtki items={fiveDayWeather} filterHour="00" />
-                        <WeatherOnFiveDay items={fiveDayWeather} timezone={weather.timezone} filterHour="00" />
+                        <PrognozNaSurtki items={fiveDayWeather} isNight={true} />
+                        <WeatherOnFiveDay items={fiveDayWeather} filterHour="00" />
                     </div>
                 </div>
             )}
