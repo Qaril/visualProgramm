@@ -1,40 +1,54 @@
 import React from 'react';
-import type {IWeather} from "../types/weather.ts";
+import type { IWeather } from "../types/weather.ts";
 
 
 
-interface WeatherOnFiveDayProps{
+interface WeatherOnFiveDayProps {
     items: IWeather[];
-    timezone:number;
+    timezone: number;
 }
 
+const WeatherOnFiveDay = ({ items, filterHour }: { items: IWeather[], filterHour: string }) => {
 
-const WeatherOnFiveDay = ({items, timezone}: WeatherOnFiveDayProps) => {
+    const dayData = items.filter(item => item.dt_txt?.includes(`${filterHour}:00:00`));
+    const nightData = items.filter(item => item.dt_txt?.includes('00:00:00'));
 
-    const dailyData = items.filter(item => item.dt_txt?.includes("12:00:00"));
-    const formatDate = (dt: number) => {
-        return new Date(dt * 1000).toLocaleDateString('ru-RU', {
-            weekday: 'short',
-            day:'numeric'
-        });
-    };
 
     return (
         <div className="fiveDay">
-            {dailyData.map((item, index) => (
-                <div key={index} className="fiveDay-item">
-                    <span>{formatDate(item.dt)}</span>
-                    <img
-                        src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
-                        alt="icon"
-                    />
-                    <div className="temp-range">
-                        <span className="temp">{Math.round(item.main.temp)}°C</span>
+            {dayData.map((dayItem, index) => {
+
+                const nightItem = nightData[index];
+
+                return (
+                    <div key={index} className="fiveDay-item">
+                        <span>
+                            {new Date(dayItem.dt * 1000).toLocaleDateString('ru-RU', {
+                                weekday: 'short',
+                                day: 'numeric'
+                            })}
+                        </span>
+
+                        <img
+                            src={`https://openweathermap.org/img/wn/${dayItem.weather[0].icon}.png`}
+                            alt="icon"
+                        />
+
+                        <div className="temp-range">
+
+                            <span className="day-temp">{Math.round(dayItem.main.temp)}°</span>
+
+                            {nightItem && (
+                                <span className="night-temp" style={{ opacity: 0.6, marginLeft: '8px' }}>
+                                    {Math.round(nightItem.main.temp)}°
+                                </span>
+                            )}
+                        </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
     );
 };
 
-            export default WeatherOnFiveDay;
+export default WeatherOnFiveDay;

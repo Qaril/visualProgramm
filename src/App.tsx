@@ -1,21 +1,21 @@
-import React, {useEffect, useState} from 'react';
-import type {IWeather} from "./types/weather.ts";
+import React, { useEffect, useState } from 'react';
+import type { IWeather } from "./types/weather.ts";
 import axios from 'axios';
 import Weather from "./components/Weather.tsx";
 import WeatherOnFiveDay from "./components/WeatherOnFiveDay.tsx";
 import PrognozNaSurtki from "./components/PrognozNaSurtki.tsx";
-import './App.css'
+import './App.css';
 
 const App = () => {
-
-    const [weather,setWeather] = useState<IWeather | null>(null);
+    const [weather, setWeather] = useState<IWeather | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [city, setCity] = useState<string>("Novosibirsk");
     const [inputValue, setInputValue] = useState<string>("");
     const [fiveDayWeather, setFiveDayWeather] = useState<IWeather[] | null>(null);
-
     const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+
+
 
 
     const fetchWeather = async (targetCityinSearch: string) => {
@@ -27,11 +27,10 @@ const App = () => {
             const forecastRes = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${targetCityinSearch}&appid=${API_KEY}&units=metric&lang=ru`);
             setFiveDayWeather(forecastRes.data.list);
             setError(null);
-        }catch (e) {
-            setError("Ошибочка в загрузке погоды 😡");
+        } catch (e) {
+            setError("Ошибка загрузки");
             console.error(e);
-        }
-        finally {
+        } finally {
             setLoading(false);
         }
     };
@@ -40,36 +39,48 @@ const App = () => {
         fetchWeather(city);
     }, []);
 
-
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        if(inputValue.trim()) {
+        if (inputValue.trim()) {
             fetchWeather(inputValue);
             setCity(inputValue);
         }
     };
 
-
-    if (loading) return <div>Выполняется загрузка💫</div>
-    if (error) return <div>ОШИБКА {error}</div>
+    if (loading) return <div>Загрузка...</div>;
+    if (error) return <div>{error}</div>;
 
     return (
-        <div className={"main-app"}>
-            <form onSubmit={handleSearch}>
+        <div className="main-app">
+            <form onSubmit={handleSearch} className="search-form">
                 <input
-                type={"text"} value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder={"Введи название города"}
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder="Введи название города"
                 />
-                <button type={"submit"}>Поиск🚀</button>
+                <button type="submit">Поиск</button>
             </form>
-            {weather && <Weather data={weather} />}
 
-            {fiveDayWeather && weather && (
-                <>
-                    <PrognozNaSurtki items={fiveDayWeather} />
-                    <WeatherOnFiveDay items={fiveDayWeather} timezone={weather.timezone} />
-                </>
+            {weather && fiveDayWeather && (
+                <div className="forecast-layout">
+                    <div className="weather-card day-card">
+                        <div className="card-type-label">ДЕНЬ</div>
+                        <Weather data={weather} />
+                        <PrognozNaSurtki items={fiveDayWeather} filterHour="12" />
+                        <WeatherOnFiveDay items={fiveDayWeather} timezone={weather.timezone} filterHour="12" />
+                    </div>
+
+                    <div className="weather-card night-card">
+                        <div className="card-type-label">НОЧЬ</div>
+                        <Weather data={weather} />
+                        <PrognozNaSurtki items={fiveDayWeather} filterHour="00" />
+                        <WeatherOnFiveDay items={fiveDayWeather} timezone={weather.timezone} filterHour="00" />
+                    </div>
+                </div>
             )}
         </div>
     );
 };
+
 export default App;

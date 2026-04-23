@@ -1,15 +1,8 @@
 import React from 'react';
 import type {IWeather} from "../types/weather.ts";
 
-
-interface PrognozNaSutkiProps{
-    items: IWeather[];
-}
-
-
-const PrognozNaSutki = ({ items }: PrognozNaSutkiProps) => {
-
-    const prognozNaSutkiData = items.slice(0, 5);
+const PrognozNaSutki = ({ items, filterHour }: { items: IWeather[], filterHour: string }) => {
+    const filtered = items.filter(item => item.dt_txt?.includes(` ${filterHour}:`)).slice(0, 5);
 
     const formatTime = (dt: number, index: number) => {
         if (index === 0) return "Now";
@@ -21,12 +14,10 @@ const PrognozNaSutki = ({ items }: PrognozNaSutkiProps) => {
 
     return (
         <div className="prognoznaSutki">
-            {prognozNaSutkiData.map((item, index) => (
+            {filtered.map((item, index) => (
                 <div key={index} className="prognozNaSutki-item">
                     <span className="time">{formatTime(item.dt, index)}</span>
-
                     <span className="temp">{Math.round(item.main.temp)}°</span>
-
                     <img
                         src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
                         alt="icon"
@@ -37,5 +28,4 @@ const PrognozNaSutki = ({ items }: PrognozNaSutkiProps) => {
     );
 };
 
-
-            export default PrognozNaSutki;
+export default PrognozNaSutki;
